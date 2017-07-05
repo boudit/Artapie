@@ -21,34 +21,11 @@
 
             <Button Grid.Row="0"
                     Command="{Binding CreateCommand}"
-                    Style="{StaticResource AddButton}"
                     HorizontalAlignment="Left"/>
 
             <ListBox Grid.Row="1" 
                      ItemsSource="{Binding Children}"
                      SelectedItem="{Binding CurrentChild}">
-                <ListBox.Resources>
-                    <!-- Background of selected item when focused -->
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource ColorPatientBackgroundDark}"/>
-                    <!-- Background of selected item when not focused -->
-                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White" />
-                </ListBox.Resources>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type patient:PatientViewModel}">
-                            <TextBlock Foreground="{StaticResource PatientForeground}"
-                                       Height="30"
-                                       VerticalAlignment="Center">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="Prenom" />
-                                        <Binding Path="Nom" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
 

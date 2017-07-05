@@ -6,9 +6,12 @@
         xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="700"
-        WindowStartupLocation="CenterScreen"
-        Background="{StaticResource ApplicationBackground}"
-        Foreground="{StaticResource ApplicationForeground}">
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        WindowStartupLocation="CenterScreen">
     
     <Window.DataContext>
         <viewModel:MainWindowViewModel />
@@ -28,12 +31,10 @@
             
             <Button Grid.Column="0" 
                     Content="Patients" 
-                    Command="{Binding DisplayPatientsCommand}"
-                    Style="{StaticResource PatientButton}"/>
+                    Command="{Binding DisplayPatientsCommand}"/>
             <Button Grid.Column="1" 
                     Content="Items" 
-                    Command="{Binding DisplayItemsCommand}"
-                    Style="{StaticResource PatientButton}" />
+                    Command="{Binding DisplayItemsCommand}" />
         </Grid>
         
         <ContentControl Grid.Row="1"

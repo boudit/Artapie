@@ -9,23 +9,36 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
-        <DataTemplate DataType="{x:Type viewModelPatient:PatientsViewModel}">
-            <patient:PatientsView />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
 
-        <DataTemplate DataType="{x:Type viewModelPatient:PatientViewModel}">
-            <patient:PatientView />
-        </DataTemplate>
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type viewModelPatient:PatientsViewModel}">
+                    <patient:PatientsView />
+                </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModelItem:ItemsViewModel}">
-            <item:ItemsView />
-        </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModelPatient:PatientViewModel}">
+                    <patient:PatientView />
+                </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModelItem:ItemViewModel}">
-            <item:ItemView />
-        </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModelItem:ItemsViewModel}">
+                    <item:ItemsView />
+                </DataTemplate>
 
-        <Brush x:Key="ApplicationBackground">#252525</Brush>
+                <DataTemplate DataType="{x:Type viewModelItem:ItemViewModel}">
+                    <item:ItemView />
+                    </DataTemplate>
+                </ResourceDictionary>
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+        
+        <!--<Brush x:Key="ApplicationBackground">#252525</Brush>
         <Brush x:Key="ApplicationForeground">White</Brush>
 
         <Brush x:Key="ActionButtonForeground">White</Brush>
@@ -97,17 +110,17 @@
                     <ControlTemplate TargetType="{x:Type Button}">
                         
                         <Border Background="{TemplateBinding Background}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-                            <!--<Grid>
+                            --><!--<Grid>
                                 <Path x:Name="PathIcon" Width="{StaticResource ButtonContentSize}" Height="25" Stretch="Fill" Fill="#4C87B3" HorizontalAlignment="Left" Margin="17,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
                                 <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
-                            </Grid>-->
+                            </Grid>--><!--
                             <ContentPresenter x:Name="ButtonContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Margin}" />
                         </Border>
                         
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource PatientBackgroundLight}" />
-                                <!--<Setter TargetName="PathIcon" Property="Fill" Value="Black" />-->
+                                --><!--<Setter TargetName="PathIcon" Property="Fill" Value="Black" />--><!--
                             </Trigger>
 
                             <Trigger Property="IsPressed" Value="True">
@@ -128,7 +141,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="{x:Null}" />
-        </Style>
+        </Style>-->
 
     </Application.Resources>
 </Application>
