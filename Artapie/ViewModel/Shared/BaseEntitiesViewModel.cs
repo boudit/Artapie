@@ -13,17 +13,15 @@
     {
         protected readonly ModelContext context;
 
-        protected BaseEntitiesViewModel(ModelContext context)
+        protected BaseEntitiesViewModel(NavigationViewModel parent, ModelContext context)
+            :base (parent)
         {
             this.context = context;
-
-            this.DisplayChildCommand = new DelegateCommand<NavigationViewModel>(vm => this.CurrentChild = vm);
+            
             this.CreateCommand = new DelegateCommand(this.Create);
             this.LoadCommand = new DelegateCommand(this.Load);
         }
-
-        public IDelegateCommand DisplayChildCommand { get; private set; }
-
+        
         public IDelegateCommand LoadCommand { get; }
 
         public IDelegateCommand CreateCommand { get; }
@@ -59,9 +57,18 @@
             return arg => true;
         }
 
+        protected virtual void InitViewModel(BaseEntityViewModel<T> viewModel)
+        {
+            
+        }
+
         private BaseEntityViewModel<T> CreateViewModel(T entity)
         {
-            return ViewModelFactory.Create(entity, this.context);
+            var result = ViewModelFactory.Create(this, entity, this.context);
+
+            this.InitViewModel(result);
+
+            return result;
         }
 
         private void Create()
@@ -70,6 +77,8 @@
             this.context.Set<T>().Add(entity);
 
             var viewModel = this.CreateViewModel(entity);
+
+            this.Children.Add(viewModel);
 
             this.CurrentChild = viewModel;
         }
@@ -110,14 +119,16 @@
 
         private void CurrentChild_OnSavedEvent(object sender, EntityState eventArgs)
         {
-            if (eventArgs == EntityState.Added)
-            {
-                this.AddChild(sender as BaseEntityViewModel<T>);
-            }
-            else if (eventArgs == EntityState.Deleted)
-            {
-                this.RemoveChild(sender as BaseEntityViewModel<T>);
-            }
+            //if (eventArgs == EntityState.Added)
+            //{
+            //    this.AddChild(sender as BaseEntityViewModel<T>);
+            //}
+            //else if (eventArgs == EntityState.Deleted)
+            //{
+            //    this.RemoveChild(sender as BaseEntityViewModel<T>);
+            //}
+
+            this.LoadCommand.Execute(null);
         }
     }
 }

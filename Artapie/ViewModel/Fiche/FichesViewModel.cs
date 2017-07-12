@@ -7,23 +7,23 @@
 namespace ViewModel.Fiche
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
 
     using Dal;
 
     using DalContract.Models;
 
+    using ViewModel.Patient;
     using ViewModel.Shared;
 
     public class FichesViewModel : BaseEntitiesViewModel<Fiche>
     {
-        public FichesViewModel(ModelContext context)
-            : base(context)
+        public FichesViewModel(NavigationViewModel parent, ModelContext context)
+            : base(parent, context)
         {
         }
 
-        public Patient Parent { get; set; }
+        public PatientViewModel PatientViewModel { get; set; }
 
         protected override Expression<Func<Fiche, bool>> LoadFilter()
         {
@@ -32,7 +32,14 @@ namespace ViewModel.Fiche
                 return base.LoadFilter();
             }
 
-            return arg => arg.Patient.Id == this.Parent.Id;
+            return arg => arg.Patient.Id == this.PatientViewModel.Entity.Id;
+        }
+
+        protected override void InitViewModel(BaseEntityViewModel<Fiche> viewModel)
+        {
+            base.InitViewModel(viewModel);
+
+            ((FicheViewModel)viewModel).PatientViewModel = this.PatientViewModel;
         }
     }
 }

@@ -9,8 +9,9 @@
 
         private event EventHandler CloseEvent;
 
-        public NavigationViewModel()
+        public NavigationViewModel(NavigationViewModel parent)
         {
+            this.Parent = parent;
             this.Children = new ObservableCollection<NavigationViewModel>();
 
             this.CloseCommand = new DelegateCommand(this.Close);
@@ -33,11 +34,13 @@
             }
         }
 
+        public NavigationViewModel Parent { get; }
+
         public ObservableCollection<NavigationViewModel> Children { get; }
 
         public IDelegateCommand CloseCommand { get; }
         
-        private void Close()
+        protected virtual void Close()
         {
             this.CloseEvent?.Invoke(this, EventArgs.Empty);
         }

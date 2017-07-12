@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-
-namespace View.Item
+﻿namespace View.Item
 {
+    using UserControl = System.Windows.Controls.UserControl;
+
     /// <summary>
     /// Interaction logic for ItemView.xaml
     /// </summary>

@@ -8,8 +8,8 @@
 
     public class ItemsViewModel : BaseEntitiesViewModel<Item>
     {
-        public ItemsViewModel(ModelContext context)
-            : base(context)
+        public ItemsViewModel(NavigationViewModel parent, ModelContext context)
+            : base(parent, context)
         {
         }
     }

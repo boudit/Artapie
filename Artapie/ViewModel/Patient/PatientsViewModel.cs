@@ -8,8 +8,8 @@
 
     public class PatientsViewModel : BaseEntitiesViewModel<Patient>
     {
-        public PatientsViewModel(ModelContext context)
-            : base(context)
+        public PatientsViewModel(NavigationViewModel parent, ModelContext context)
+            : base(parent, context)
         {
         }
     }

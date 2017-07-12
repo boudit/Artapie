@@ -4,49 +4,107 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:patient="clr-namespace:ViewModel.Patient;assembly=ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:validation="clr-namespace:View.Validation"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance patient:PatientViewModel}">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" 
-                   Grid.Column="0"
-                   Text="Nom" />
-        <TextBox Grid.Row="0" 
-                 Grid.Column="1"
-                 Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="1" 
-                   Grid.Column="0"
-                   Text="Prénom" />
-        <TextBox Grid.Row="1" 
-                 Grid.Column="1"
-                 Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Grid Grid.Row="3"
-              Grid.Column="1"
-              HorizontalAlignment="Right">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            
-            <Button Grid.Column="0" 
-                    Content="Enregistrer" 
-                    Command="{Binding SaveCommand}" />
-            <Button Grid.Column="1" 
-                    Content="Fermer" 
-                    Command="{Binding CloseCommand}" />
+    <materialDesign:Card VerticalAlignment="Stretch"
+                         HorizontalAlignment="Stretch">
+
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                       Margin="16 16 16 4" 
+                       Style="{StaticResource MaterialDesignHeadlineTextBlock}" 
+                       HorizontalAlignment="Center"
+                       Text="{Binding DisplayValue}" />
+
+                <Button Grid.Row="0"
+                    Command="{Binding CloseCommand}"
+                    Style="{StaticResource MaterialDesignToolForegroundButton}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Margin="8 16 16 4"
+                    ToolTip="Fermer">
+                    <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Left" />
+                </Button>
+
+                <Separator Grid.Row="1" Style="{StaticResource MaterialDesignLightSeparator}"/>
+
+                <Grid Grid.Row="2" Margin="0 6 0 0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <materialDesign:PackIcon Grid.Row="0" Grid.Column="0" Kind="Account" Foreground="{Binding ElementName=PrenomTextBox, Path=BorderBrush}" />
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             x:Name="PrenomTextBox" 
+                             materialDesign:HintAssist.Hint="Prénom" 
+                             materialDesign:HintAssist.IsFloating="True" >
+                        <TextBox.Text>
+                            <Binding Path="Prenom" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             materialDesign:HintAssist.Hint="Nom"
+                             materialDesign:HintAssist.IsFloating="True" >
+                        <TextBox.Text>
+                            <Binding Path="Nom" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Separator Grid.Row="2" Grid.ColumnSpan="2" 
+                               Style="{StaticResource MaterialDesignLightSeparator}"/>
+
+                    <Button Grid.Row="3" Grid.Column="1"
+                            HorizontalAlignment="Right" 
+                            Style="{StaticResource MaterialDesignToolForegroundButton}" 
+                            Width="30" 
+                            Padding="2 0 0 0"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            Command="{Binding SaveCommand}">
+                        <materialDesign:PackIcon Kind="Check" />
+                    </Button>
+                </Grid>
+
+                <Expander Grid.Row="3"
+                          HorizontalAlignment="Stretch"
+                          Header="Fiches">
+
+                    <ContentControl Content="{Binding Fiches, Mode=OneWay}"/>
+                    
+                </Expander>
+            </Grid>
+
+            <ContentControl Content="{Binding CurrentChild, Mode=OneWay}"
+                        Margin="16"/>
         </Grid>
-    </Grid>
+    </materialDesign:Card>
+
 </UserControl>

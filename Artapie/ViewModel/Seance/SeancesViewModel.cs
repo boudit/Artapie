@@ -14,8 +14,8 @@ namespace ViewModel.Seance
 
     public class SeancesViewModel : BaseEntitiesViewModel<Seance>
     {
-        public SeancesViewModel(ModelContext context)
-            : base(context)
+        public SeancesViewModel(NavigationViewModel parent, ModelContext context)
+            : base(parent, context)
         {
         }
     }

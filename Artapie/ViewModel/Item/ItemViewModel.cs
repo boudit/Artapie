@@ -8,8 +8,10 @@
 
     public class ItemViewModel : BaseEntityViewModel<Item>
     {
-        public ItemViewModel(Item entity, ModelContext context)
-            : base(entity, context)
+        private string nom;
+
+        public ItemViewModel(NavigationViewModel parent, Item entity, ModelContext context)
+            : base(parent, entity, context)
         {
         }
         
@@ -17,19 +19,31 @@
         {
             get
             {
-                return this.CurrentEntityEntry.Entity.Nom;
+                return this.nom;
             }
 
             set
             {
-                if (this.CurrentEntityEntry.Entity.Nom == value)
-                {
-                    return;
-                }
-
-                this.CurrentEntityEntry.Entity.Nom = value;
-                this.OnPropertyChanged();
+                this.SetProperty(ref this.nom, value);
             }
+        }
+
+        public override string DisplayValue
+        {
+            get
+            {
+                return this.Nom;
+            }
+        }
+
+        protected override void InjectIntoEntity(Item entity)
+        {
+            entity.Nom = this.Nom;
+        }
+
+        protected override void PopulateFromEntity(Item entity)
+        {
+            this.Nom = entity.Nom;
         }
     }
 }

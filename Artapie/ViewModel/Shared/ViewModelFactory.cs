@@ -18,13 +18,13 @@
             allViewModelTypes = GetAllEntityViewModelTypes();
         }
 
-        public static BaseEntityViewModel<T> Create<T>(T entity, ModelContext context) where T : class, IModel, new()
+        public static BaseEntityViewModel<T> Create<T>(NavigationViewModel parent, T entity, ModelContext context) where T : class, IModel, new()
         {
             var type = allViewModelTypes.FirstOrDefault(t => t.IsSubclassOfGenericType(typeof(BaseEntityViewModel<>), typeof(T)));
 
-            var constructor = type?.GetConstructor(new[] { typeof(T), typeof(ModelContext) });
+            var constructor = type?.GetConstructor(new[] { typeof(NavigationViewModel), typeof(T), typeof(ModelContext) });
 
-            return constructor?.Invoke(new object[] { entity, context }) as BaseEntityViewModel<T>;
+            return constructor?.Invoke(new object[] { parent, entity, context }) as BaseEntityViewModel<T>;
         }
 
         private static IEnumerable<Type> GetAllEntityViewModelTypes()

@@ -50,7 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cotation\CotationsViewModel.cs" />
     <Compile Include="Fiche\FichesViewModel.cs" />
+    <Compile Include="Fiche\FicheViewModel.cs" />
     <Compile Include="Item\ItemViewModel.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Item\ItemsViewModel.cs" />

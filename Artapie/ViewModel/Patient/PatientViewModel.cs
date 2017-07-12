@@ -9,28 +9,26 @@
 
     public class PatientViewModel : BaseEntityViewModel<Patient>
     {
-        public PatientViewModel(Patient entity, ModelContext context)
-            : base(entity, context)
+        private string prenom;
+
+        private string nom;
+
+        public PatientViewModel(NavigationViewModel parent, Patient entity, ModelContext context)
+            : base(parent, entity, context)
         {
-            this.Fiches = new FichesViewModel(context) { Parent = entity };
+            this.Fiches = new FichesViewModel(this, context) { PatientViewModel = this };
         }
 
         public string Prenom
         {
             get
             {
-                return this.CurrentEntityEntry.Entity.Prenom;
+                return this.prenom;
             }
 
             set
             {
-                if (this.CurrentEntityEntry.Entity.Prenom == value)
-                {
-                    return;
-                }
-
-                this.CurrentEntityEntry.Entity.Prenom = value;
-                this.OnPropertyChanged();
+                this.SetProperty(ref this.prenom, value);
             }
         }
 
@@ -38,21 +36,35 @@
         {
             get
             {
-                return this.CurrentEntityEntry.Entity.Nom;
+                return this.nom;
             }
 
             set
             {
-                if (this.CurrentEntityEntry.Entity.Nom == value)
-                {
-                    return;
-                }
-
-                this.CurrentEntityEntry.Entity.Nom = value;
-                this.OnPropertyChanged();
+                this.SetProperty(ref this.nom, value);
             }
         }
 
         public FichesViewModel Fiches { get; }
+
+        public override string DisplayValue
+        {
+            get
+            {
+                return $"{this.Prenom} {this.Nom}";
+            }
+        }
+
+        protected override void InjectIntoEntity(Patient entity)
+        {
+            entity.Nom = this.Nom;
+            entity.Prenom = this.Prenom;
+        }
+
+        protected override void PopulateFromEntity(Patient entity)
+        {
+            this.Nom = entity.Nom;
+            this.Prenom = entity.Prenom;
+        }
     }
 }

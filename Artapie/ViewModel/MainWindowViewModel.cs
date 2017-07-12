@@ -15,11 +15,12 @@
         private readonly ItemsViewModel itemsViewModel;
         
         public MainWindowViewModel()
+            : base(null)
         {
             var context = new ModelContext(Path.GetFullPath("./Database.mdf"));
 
-            this.patientsViewModel = new PatientsViewModel(context);
-            this.itemsViewModel = new ItemsViewModel(context);
+            this.patientsViewModel = new PatientsViewModel(this, context);
+            this.itemsViewModel = new ItemsViewModel(this, context);
             
             this.DisplayPatientsCommand = new DelegateCommand(this.DisplayPatients);
             this.DisplayItemsCommand = new DelegateCommand(this.DisplayItems);

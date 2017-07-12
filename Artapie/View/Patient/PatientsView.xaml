@@ -4,32 +4,99 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:patient="clr-namespace:ViewModel.Patient;assembly=ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance patient:PatientsViewModel}">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <materialDesign:Card VerticalAlignment="Stretch"
+                         HorizontalAlignment="Stretch">
+        <Grid>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <Button Grid.Row="0"
+                <TextBlock Grid.Row="0" 
+                       Margin="16 16 16 4" 
+                       Style="{StaticResource MaterialDesignHeadlineTextBlock}" 
+                       HorizontalAlignment="Center"
+                       Text="Patients" />
+
+                <Button Grid.Row="0"
+                    Command="{Binding CloseCommand}"
+                    Style="{StaticResource MaterialDesignToolForegroundButton}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Margin="8 16 16 4"
+                    ToolTip="Fermer">
+                    <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Left" />
+                </Button>
+
+                <Separator Grid.Row="1" Style="{StaticResource MaterialDesignLightSeparator}"/>
+
+                <Button Grid.Row="2"
                     Command="{Binding CreateCommand}"
-                    HorizontalAlignment="Left"/>
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="16 -8 0 0"
+                    ToolTip="Créer">
+                    <materialDesign:PackIcon Kind="Plus" Height="20" Width="20" />
+                </Button>
 
-            <ListBox Grid.Row="1" 
-                     ItemsSource="{Binding Children}"
-                     SelectedItem="{Binding CurrentChild}">
-            </ListBox>
+                <ItemsControl Grid.Row="2" 
+                              ItemsSource="{Binding Children}" >
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <WrapPanel  Width="{TemplateBinding Width}" 
+                                    Height="{TemplateBinding Height}" 
+                                    FlowDirection="LeftToRight" 
+                                    IsItemsHost="true">
+                            </WrapPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type patient:PatientViewModel}">
+                            <materialDesign:Card Margin="4 4 0 0" >
+
+                                <Button Command="{Binding DisplayMeCommand}"
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Height="{x:Static system:Double.NaN}"
+                                    VerticalAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch">
+                                    <Grid>
+                                        <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Stretch">
+                                            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}"
+                                               Text="{Binding DisplayValue}"
+                                               TextWrapping="WrapWithOverflow"
+                                               Height="128" Width="128"
+                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        </materialDesign:ColorZone>
+                                    </Grid>
+                                </Button>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <ContentControl Content="{Binding CurrentChild, Mode=OneWay}"
+                        Margin="16"/>
         </Grid>
-
-        <ContentControl Grid.Column="1" 
-                        Content="{Binding CurrentChild, Mode=OneWay}"/>
-    </Grid>
+    </materialDesign:Card>
 </UserControl>

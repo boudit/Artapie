@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="700"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -18,26 +20,95 @@
     </Window.DataContext>
     
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="120" />
-                <ColumnDefinition Width="Auto" MinWidth="120" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <Button Grid.Column="0" 
-                    Content="Patients" 
-                    Command="{Binding DisplayPatientsCommand}"/>
-            <Button Grid.Column="1" 
-                    Content="Items" 
-                    Command="{Binding DisplayItemsCommand}" />
+
+            <materialDesign:Card Grid.Row="0"
+                             Grid.Column="0"
+                             Margin="8"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch">
+
+                <Button Command="{Binding DisplayPatientsCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Height="{x:Static system:Double.NaN}"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <materialDesign:ColorZone Grid.Row="0" 
+                                              Mode="PrimaryLight" 
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch">
+                            <materialDesign:PackIcon Kind="AccountCircle" 
+                                                 VerticalAlignment="Stretch" 
+                                                 HorizontalAlignment="Stretch"
+                                                 Height="{x:Static system:Double.NaN}"
+                                                 Width="{x:Static system:Double.NaN}"/>
+                        </materialDesign:ColorZone>
+
+                        <TextBlock Grid.Row="1" 
+                               Style="{StaticResource MaterialDesignTitleTextBlock}"
+                               HorizontalAlignment="Center"
+                               Text="Patients" />
+                    </Grid>
+                </Button>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Row="0"
+                             Grid.Column="1"
+                             Margin="8"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch">
+
+                <Button Command="{Binding DisplayItemsCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Height="{x:Static system:Double.NaN}"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <materialDesign:ColorZone Grid.Row="0" 
+                                              Mode="PrimaryLight" 
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch">
+                            <materialDesign:PackIcon Kind="FileCheck"
+                                                 VerticalAlignment="Stretch" 
+                                                 HorizontalAlignment="Stretch"
+                                                 Height="{x:Static system:Double.NaN}"
+                                                 Width="{x:Static system:Double.NaN}"/>
+                        </materialDesign:ColorZone>
+
+                        <TextBlock Grid.Row="1" 
+                               Style="{StaticResource MaterialDesignTitleTextBlock}"
+                               HorizontalAlignment="Center"
+                               Text="Items" />
+                    </Grid>
+                </Button>
+            </materialDesign:Card>
         </Grid>
-        
-        <ContentControl Grid.Row="1"
-                        Content="{Binding CurrentChild, Mode=OneWay}"/>
+
+        <ContentControl Content="{Binding CurrentChild, Mode=OneWay}"
+                        Margin="16"/>
     </Grid>
+    
 </Window>

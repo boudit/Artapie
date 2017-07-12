@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-
-namespace View.Patient
+﻿namespace View.Patient
 {
+    using UserControl = System.Windows.Controls.UserControl;
+
     /// <summary>
     /// Interaction logic for PatientsView.xaml
     /// </summary>
