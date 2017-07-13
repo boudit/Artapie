@@ -14,10 +14,14 @@
         private readonly ModelContext context;
 
         private DateTime? date;
-        
+
+        private bool isSelected;
+
         public event EventHandler SavedEvent;
 
         public event EventHandler CloseEvent;
+
+        public event EventHandler IsSelectedChanged;
 
         public SeanceViewModel(Seance entity, ModelContext context)
         {
@@ -27,6 +31,7 @@
             this.SaveCommand = new DelegateCommand(this.Save);
             this.CloseCommand = new DelegateCommand(this.Close);
             this.RefreshCommand = new DelegateCommand(this.Refresh);
+            this.SwitchIsSelectedCommand = new DelegateCommand(() => this.IsSelected = !this.IsSelected);
 
             this.Fiches = new FichesViewModel(context) { SeanceViewModel = this };
 
@@ -38,6 +43,8 @@
         public IDelegateCommand RefreshCommand { get; }
         
         public IDelegateCommand CloseCommand { get; }
+
+        public IDelegateCommand SwitchIsSelectedCommand { get; }
 
         public Seance Entity { get; private set; }
 
@@ -53,7 +60,21 @@
                 this.SetProperty(ref this.date, value);
             }
         }
-        
+
+        public bool IsSelected
+        {
+            get
+            {
+                return this.isSelected;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isSelected, value);
+                this.IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public FichesViewModel Fiches { get; }
 
         public string DisplayValue

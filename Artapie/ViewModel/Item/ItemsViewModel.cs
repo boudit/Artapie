@@ -65,6 +65,12 @@
 
         private void Refresh()
         {
+            this.Children.Select(
+                c =>
+                {
+                    this.RemoveHandlerOnChild(c);
+                    return true;
+                });
             this.Children.Clear();
 
             var entities = this.context.Set<Item>()
@@ -82,6 +88,7 @@
             var viewModel = this.CreateViewModel(entity);
 
             this.Children.Add(viewModel);
+            this.AddHandlerOnChild(viewModel);
 
             return viewModel;
         }
@@ -89,6 +96,16 @@
         private ItemViewModel CreateViewModel(Item entity)
         {
             return new ItemViewModel(entity, this.context);
+        }
+
+        private void AddHandlerOnChild(ItemViewModel child)
+        {
+            child.IsSelectedChanged += this.Child_OnIsSelectedChanged;
+        }
+
+        private void RemoveHandlerOnChild(ItemViewModel child)
+        {
+            child.IsSelectedChanged -= this.Child_OnIsSelectedChanged;
         }
 
         private void AddHandlerOnCurrentChild()
@@ -121,6 +138,11 @@
         private void CurrentChild_OnSavedEvent(object sender, EventArgs eventArgs)
         {
             this.RefreshCommand.Execute(null);
+        }
+
+        private void Child_OnIsSelectedChanged(object sender, EventArgs eventArgs)
+        {
+            this.CurrentChild = sender as ItemViewModel;
         }
     }
 }

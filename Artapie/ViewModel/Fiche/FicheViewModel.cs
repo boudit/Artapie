@@ -15,9 +15,13 @@
     {
         private readonly ModelContext context;
 
+        private bool isSelected;
+
         public event EventHandler SavedEvent;
 
         public event EventHandler CloseEvent;
+
+        public event EventHandler IsSelectedChanged;
 
         public FicheViewModel(Fiche entity, ModelContext context)
         {
@@ -27,6 +31,7 @@
             this.SaveCommand = new DelegateCommand(this.Save);
             this.CloseCommand = new DelegateCommand(this.Close);
             this.RefreshCommand = new DelegateCommand(this.Refresh);
+            this.SwitchIsSelectedCommand = new DelegateCommand(() => this.IsSelected = !this.IsSelected);
 
             // this.CotationsViewModel = new CotationsViewModel(context) { FicheViewModel = this };
 
@@ -39,7 +44,23 @@
 
         public IDelegateCommand CloseCommand { get; }
 
+        public IDelegateCommand SwitchIsSelectedCommand { get; }
+
         public Fiche Entity { get; private set; }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return this.isSelected;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isSelected, value);
+                this.IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public CotationsViewModel CotationsViewModel { get; }
 

@@ -76,6 +76,12 @@ namespace ViewModel.Fiche
 
         private void Refresh()
         {
+            this.Children.Select(
+                c =>
+                {
+                    this.RemoveHandlerOnChild(c);
+                    return true;
+                });
             this.Children.Clear();
 
             var query = this.context.Fiches.AsQueryable();
@@ -105,6 +111,7 @@ namespace ViewModel.Fiche
             var viewModel = this.CreateViewModel(entity);
 
             this.Children.Add(viewModel);
+            this.AddHandlerOnChild(viewModel);
 
             return viewModel;
         }
@@ -116,6 +123,16 @@ namespace ViewModel.Fiche
             result.PatientViewModel = this.PatientViewModel;
 
             return result;
+        }
+
+        private void AddHandlerOnChild(FicheViewModel child)
+        {
+            child.IsSelectedChanged += this.Child_OnIsSelectedChanged;
+        }
+
+        private void RemoveHandlerOnChild(FicheViewModel child)
+        {
+            child.IsSelectedChanged -= this.Child_OnIsSelectedChanged;
         }
 
         private void AddHandlerOnCurrentChild()
@@ -148,6 +165,11 @@ namespace ViewModel.Fiche
         private void CurrentChild_OnSavedEvent(object sender, EventArgs eventArgs)
         {
             this.RefreshCommand.Execute(null);
+        }
+
+        private void Child_OnIsSelectedChanged(object sender, EventArgs eventArgs)
+        {
+            this.CurrentChild = sender as FicheViewModel;
         }
     }
 }
