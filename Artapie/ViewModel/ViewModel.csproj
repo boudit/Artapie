@@ -58,11 +58,12 @@
     <Compile Include="Item\ItemsViewModel.cs" />
     <Compile Include="Patient\PatientsViewModel.cs" />
     <Compile Include="Patient\PatientViewModel.cs" />
-    <Compile Include="Seance\SeancesViewModel.cs" />
+    <Compile Include="Seance\SeanceViewModel.cs" />
     <Compile Include="Shared\BaseEntityViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\DelegateCommand.cs" />
     <Compile Include="Shared\Extensions.cs" />
+    <Compile Include="Shared\IClosable.cs" />
     <Compile Include="Shared\IDelegateCommand.cs" />
     <Compile Include="Shared\BaseEntitiesViewModel.cs" />
     <Compile Include="Shared\NavigationViewModel.cs" />

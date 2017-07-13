@@ -17,7 +17,7 @@
         {
             allViewModelTypes = GetAllEntityViewModelTypes();
         }
-
+        
         public static BaseEntityViewModel<T> Create<T>(NavigationViewModel parent, T entity, ModelContext context) where T : class, IModel, new()
         {
             var type = allViewModelTypes.FirstOrDefault(t => t.IsSubclassOfGenericType(typeof(BaseEntityViewModel<>), typeof(T)));

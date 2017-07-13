@@ -1,4 +1,4 @@
-﻿namespace ViewModel.Fiche
+﻿namespace ViewModel.Seance
 {
     using System;
 
@@ -6,20 +6,20 @@
 
     using DalContract.Models;
 
-    using ViewModel.Cotation;
-    using ViewModel.Patient;
-    using ViewModel.Seance;
+    using ViewModel.Fiche;
     using ViewModel.Shared;
 
-    public class FicheViewModel : NotifyPropertyChangedViewModel, IClosable
+    public class SeanceViewModel : NotifyPropertyChangedViewModel, IClosable
     {
         private readonly ModelContext context;
 
+        private DateTime? date;
+        
         public event EventHandler SavedEvent;
 
         public event EventHandler CloseEvent;
 
-        public FicheViewModel(Fiche entity, ModelContext context)
+        public SeanceViewModel(Seance entity, ModelContext context)
         {
             this.Entity = entity;
             this.context = context;
@@ -28,7 +28,7 @@
             this.CloseCommand = new DelegateCommand(this.Close);
             this.RefreshCommand = new DelegateCommand(this.Refresh);
 
-            // this.CotationsViewModel = new CotationsViewModel(context) { FicheViewModel = this };
+            this.Fiches = new FichesViewModel(context) { SeanceViewModel = this };
 
             this.Refresh();
         }
@@ -36,27 +36,43 @@
         public IDelegateCommand SaveCommand { get; }
 
         public IDelegateCommand RefreshCommand { get; }
-
+        
         public IDelegateCommand CloseCommand { get; }
 
-        public Fiche Entity { get; private set; }
+        public Seance Entity { get; private set; }
 
-        public CotationsViewModel CotationsViewModel { get; }
+        public DateTime? Date
+        {
+            get
+            {
+                return this.date;
+            }
 
-        public PatientViewModel PatientViewModel { get; set; }
+            set
+            {
+                this.SetProperty(ref this.date, value);
+            }
+        }
+        
+        public FichesViewModel Fiches { get; }
 
-        public SeanceViewModel SeanceViewModel { get; set; }
-
+        public string DisplayValue
+        {
+            get
+            {
+                return $"{this.date.Value.ToLongDateString()}";
+            }
+        }
+        
         private void Save()
         {
             if (this.Entity == null)
             {
-                this.Entity = this.context.Fiches.Create();
-                this.context.Fiches.Add(this.Entity);
+                this.Entity = this.context.Seances.Create();
+                this.context.Seances.Add(this.Entity);
             }
 
-            this.Entity.Patient = this.PatientViewModel.Entity;
-            this.Entity.Seance = this.SeanceViewModel.Entity;
+            this.Entity.Date = this.Date.Value;
 
             this.context.SaveChanges();
 
@@ -74,8 +90,7 @@
 
         private void Refresh()
         {
-            this.PatientViewModel = new PatientViewModel(this.Entity?.Patient, this.context);
-            this.SeanceViewModel = new SeanceViewModel(this.Entity?.Seance, this.context);
+            this.Date = this.Entity?.Date;
         }
     }
 }

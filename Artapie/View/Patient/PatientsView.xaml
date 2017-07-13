@@ -73,7 +73,7 @@
                         <DataTemplate DataType="{x:Type patient:PatientViewModel}">
                             <materialDesign:Card Margin="4 4 0 0" >
 
-                                <Button Command="{Binding DisplayMeCommand}"
+                                <Button Command="{Binding SwitchIsSelectedCommand}"
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Height="{x:Static system:Double.NaN}"
                                     VerticalAlignment="Stretch"
