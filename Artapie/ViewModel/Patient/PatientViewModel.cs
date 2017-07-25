@@ -19,6 +19,8 @@
 
         private bool isSelected;
 
+        private bool isEditing;
+        
         public event EventHandler SavedEvent;
 
         public event EventHandler CloseEvent;
@@ -30,6 +32,8 @@
             this.Entity = entity;
             this.context = context;
 
+            this.EditCommand = new DelegateCommand(() => this.IsEditing = true);
+            this.CancelEditionCommand = new DelegateCommand(() => {this.Refresh(); this.IsEditing = false; });
             this.SaveCommand = new DelegateCommand(this.Save);
             this.CloseCommand = new DelegateCommand(this.Close);
             this.RefreshCommand = new DelegateCommand(this.Refresh);
@@ -39,6 +43,10 @@
 
             this.Refresh();
         }
+
+        public IDelegateCommand EditCommand { get; }
+
+        public IDelegateCommand CancelEditionCommand { get; }
 
         public IDelegateCommand SaveCommand { get; }
 
@@ -90,6 +98,19 @@
             }
         }
 
+        public bool IsEditing
+        {
+            get
+            {
+                return this.isEditing;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isEditing, value);
+            }
+        }
+
         public FichesViewModel Fiches { get; }
 
         public string DisplayValue
@@ -115,6 +136,7 @@
 
             this.Refresh();
 
+            this.IsEditing = false;
             this.SavedEvent?.Invoke(this, EventArgs.Empty);
         }
 

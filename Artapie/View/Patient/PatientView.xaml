@@ -10,11 +10,22 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance patient:PatientViewModel}">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-    <materialDesign:Card VerticalAlignment="Stretch"
-                         HorizontalAlignment="Stretch">
+    <Grid VerticalAlignment="Stretch"
+          HorizontalAlignment="Stretch">
 
-        <Grid>
+        <materialDesign:Card VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch"
+                             Visibility="{Binding IsEditing, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -42,54 +53,28 @@
                 <Separator Grid.Row="1" Style="{StaticResource MaterialDesignLightSeparator}"/>
 
                 <Grid Grid.Row="2" Margin="0 6 0 0" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="200" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <materialDesign:PackIcon Grid.Row="0" Grid.Column="0" Kind="Account" Foreground="{Binding ElementName=PrenomTextBox, Path=BorderBrush}" />
-                    <TextBox Grid.Row="0" Grid.Column="1"
-                             x:Name="PrenomTextBox" 
-                             materialDesign:HintAssist.Hint="Prénom" 
-                             materialDesign:HintAssist.IsFloating="True" >
-                        <TextBox.Text>
-                            <Binding Path="Prenom" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
 
-                    <TextBox Grid.Row="1" Grid.Column="1"
-                             materialDesign:HintAssist.Hint="Nom"
-                             materialDesign:HintAssist.IsFloating="True" >
-                        <TextBox.Text>
-                            <Binding Path="Nom" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+                    <TextBlock Grid.Row="0" Text="{Binding Prenom}"/>
 
-                    <Separator Grid.Row="2" Grid.ColumnSpan="2" 
-                               Style="{StaticResource MaterialDesignLightSeparator}"/>
+                    <TextBlock Grid.Row="1" Text="{Binding Nom}" />
 
-                    <Button Grid.Row="3" Grid.Column="1"
+                    <Separator Grid.Row="2"
+                                   Style="{StaticResource MaterialDesignLightSeparator}"/>
+
+                    <Button Grid.Row="3" 
                             HorizontalAlignment="Right" 
                             Style="{StaticResource MaterialDesignToolForegroundButton}" 
                             Width="30" 
                             Padding="2 0 0 0"
                             materialDesign:RippleAssist.IsCentered="True"
-                            Command="{Binding SaveCommand}">
-                        <materialDesign:PackIcon Kind="Check" />
+                            Command="{Binding EditCommand}" >
+                        <materialDesign:PackIcon Kind="Pencil" />
                     </Button>
                 </Grid>
 
@@ -98,13 +83,92 @@
                           Header="Fiches">
 
                     <ContentControl Content="{Binding Fiches, Mode=OneWay}"/>
-                    
+
                 </Expander>
             </Grid>
+        </materialDesign:Card>
 
-            <ContentControl Content="{Binding CurrentChild, Mode=OneWay}"
-                        Margin="16"/>
-        </Grid>
-    </materialDesign:Card>
+        <materialDesign:Card VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch"
+                             Visibility="{Binding IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
+                <TextBlock Grid.Row="0" 
+                           Grid.ColumnSpan="2"
+                           Margin="16 16 16 4" 
+                           Style="{StaticResource MaterialDesignHeadlineTextBlock}" 
+                           HorizontalAlignment="Center"
+                           Text="{Binding DisplayValue}" />
+
+                <Separator Grid.Row="1"
+                           Grid.ColumnSpan="2" 
+                           Style="{StaticResource MaterialDesignLightSeparator}"/>
+
+                <materialDesign:PackIcon Grid.Row="2" Grid.Column="0" 
+                                         Kind="Account" 
+                                         Foreground="{Binding ElementName=PrenomTextBox, Path=BorderBrush}" />
+                <TextBox Grid.Row="2" Grid.Column="1"
+                         x:Name="PrenomTextBox" 
+                         materialDesign:HintAssist.Hint="Prénom" 
+                         materialDesign:HintAssist.IsFloating="True">
+                    <TextBox.Text>
+                        <Binding Path="Prenom" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <TextBox Grid.Row="3" Grid.Column="1"
+                         materialDesign:HintAssist.Hint="Nom"
+                         materialDesign:HintAssist.IsFloating="True" >
+                    <TextBox.Text>
+                        <Binding Path="Nom" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <Separator Grid.Row="4" Grid.ColumnSpan="2" 
+                           Style="{StaticResource MaterialDesignLightSeparator}"/>
+
+                <StackPanel Grid.Row="5" Grid.Column="1" 
+                            Orientation="Horizontal">
+
+                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}" 
+                            Width="30" 
+                            Padding="2 0 0 0"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            Command="{Binding SaveCommand}">
+                        <materialDesign:PackIcon Kind="Check" />
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}" 
+                            Width="30" 
+                            Padding="2 0 0 0"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            Command="{Binding CancelEditionCommand}">
+                        <materialDesign:PackIcon Kind="Close" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+        </materialDesign:Card>
+
+    </Grid>
 </UserControl>

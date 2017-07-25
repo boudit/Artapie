@@ -68,6 +68,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\BooleanConverter.cs" />
+    <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="UserControl\NavigableCard.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Page Include="Item\ItemsView.xaml">
