@@ -1,13 +1,13 @@
-﻿namespace View.Item
+﻿namespace View.Fiche
 {
     using UserControl = System.Windows.Controls.UserControl;
 
     /// <summary>
-    /// Interaction logic for ItemsView.xaml
+    /// Interaction logic for PatientView.xaml
     /// </summary>
-    public partial class ItemsView : UserControl
+    public partial class FicheView : UserControl
     {
-        public ItemsView()
+        public FicheView()
         {
             InitializeComponent();
         }

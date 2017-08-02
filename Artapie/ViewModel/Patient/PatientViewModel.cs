@@ -1,7 +1,5 @@
 ﻿namespace ViewModel.Patient
 {
-    using System;
-
     using Dal;
 
     using DalContract.Models;
@@ -9,55 +7,20 @@
     using ViewModel.Fiche;
     using ViewModel.Shared;
 
-    public class PatientViewModel : NotifyPropertyChangedViewModel, IClosable
+    public sealed class PatientViewModel : EntityViewModel<Patient>
     {
-        private readonly ModelContext context;
-
         private string prenom;
 
         private string nom;
-
-        private bool isSelected;
-
-        private bool isEditing;
         
-        public event EventHandler SavedEvent;
-
-        public event EventHandler CloseEvent;
-
-        public event EventHandler IsSelectedChanged;
-
         public PatientViewModel(Patient entity, ModelContext context)
+            : base(entity, context)
         {
-            this.Entity = entity;
-            this.context = context;
-
-            this.EditCommand = new DelegateCommand(() => this.IsEditing = true);
-            this.CancelEditionCommand = new DelegateCommand(() => {this.Refresh(); this.IsEditing = false; });
-            this.SaveCommand = new DelegateCommand(this.Save);
-            this.CloseCommand = new DelegateCommand(this.Close);
-            this.RefreshCommand = new DelegateCommand(this.Refresh);
-            this.SwitchIsSelectedCommand = new DelegateCommand(() => this.IsSelected = !this.IsSelected);
-
             this.Fiches = new FichesViewModel(context) { PatientViewModel = this };
 
             this.Refresh();
         }
-
-        public IDelegateCommand EditCommand { get; }
-
-        public IDelegateCommand CancelEditionCommand { get; }
-
-        public IDelegateCommand SaveCommand { get; }
-
-        public IDelegateCommand RefreshCommand { get; }
         
-        public IDelegateCommand CloseCommand { get; }
-
-        public IDelegateCommand SwitchIsSelectedCommand { get; }
-
-        public Patient Entity { get; private set; }
-
         public string Prenom
         {
             get
@@ -83,71 +46,24 @@
                 this.SetProperty(ref this.nom, value);
             }
         }
-
-        public bool IsSelected
-        {
-            get
-            {
-                return this.isSelected;
-            }
-
-            set
-            {
-                this.SetProperty(ref this.isSelected, value);
-                this.IsSelectedChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        public bool IsEditing
-        {
-            get
-            {
-                return this.isEditing;
-            }
-
-            set
-            {
-                this.SetProperty(ref this.isEditing, value);
-            }
-        }
-
+        
         public FichesViewModel Fiches { get; }
 
-        public string DisplayValue
+        public override string DisplayValue
         {
             get
             {
                 return $"{this.Prenom} {this.Nom}";
             }
         }
-        
-        private void Save()
-        {
-            if (this.Entity == null)
-            {
-                this.Entity = this.context.Patients.Create();
-                this.context.Patients.Add(this.Entity);
-            }
 
+        protected override void SetValuesOnEntity()
+        {
             this.Entity.Nom = this.Nom;
             this.Entity.Prenom = this.Prenom;
-
-            this.context.SaveChanges();
-
-            this.Refresh();
-
-            this.IsEditing = false;
-            this.SavedEvent?.Invoke(this, EventArgs.Empty);
         }
 
-        private void Close()
-        {
-            this.Refresh();
-
-            this.CloseEvent?.Invoke(this, EventArgs.Empty);
-        }
-        
-        private void Refresh()
+        protected override void Refresh()
         {
             this.Nom = this.Entity?.Nom;
             this.Prenom = this.Entity?.Prenom;

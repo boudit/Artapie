@@ -6,6 +6,8 @@
              xmlns:viewModelItem="clr-namespace:ViewModel.Item;assembly=ViewModel"
              xmlns:item="clr-namespace:View.Item"
              xmlns:converter="clr-namespace:View.Converter"
+             xmlns:shared="clr-namespace:View.Shared"
+             xmlns:viewModelFiche="clr-namespace:ViewModel.Fiche;assembly=ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -18,29 +20,34 @@
 
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewModelPatient:PatientsViewModel}">
-                    <patient:PatientsView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModelPatient:PatientViewModel}">
-                    <patient:PatientView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModelItem:ItemsViewModel}">
-                    <item:ItemsView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModelItem:ItemViewModel}">
-                    <item:ItemView />
+                        <shared:EntitiesView />
                     </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModelPatient:PatientViewModel}">
+                        <patient:PatientView />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModelItem:ItemsViewModel}">
+                        <shared:EntitiesView />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModelItem:ItemViewModel}">
+                        <item:ItemView />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModelFiche:FichesViewModel}">
+                        <shared:EntitiesView />
+                    </DataTemplate>
+
                 </ResourceDictionary>
-                
+
                 <ResourceDictionary>
                     <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <converter:BooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter" 
                                                             True="Collapsed" 
                                                             False="Visible" />
                 </ResourceDictionary>
-                
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -50,6 +50,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -70,11 +72,17 @@
     </ApplicationDefinition>
     <Compile Include="Converter\BooleanConverter.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Fiche\FicheView.xaml.cs">
+      <DependentUpon>FicheView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\EntitiesView.xaml.cs">
+      <DependentUpon>EntitiesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\NavigableCard.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
-    <Page Include="Item\ItemsView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Fiche\FicheView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Item\ItemView.xaml">
       <SubType>Designer</SubType>
@@ -88,9 +96,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Item\ItemsView.xaml.cs">
-      <DependentUpon>ItemsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Item\ItemView.xaml.cs">
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
@@ -98,19 +103,16 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Patient\PatientsView.xaml">
+    <Page Include="Patient\PatientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Patient\PatientView.xaml">
+    <Page Include="Shared\EntitiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Patient\PatientsView.xaml.cs">
-      <DependentUpon>PatientsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Patient\PatientView.xaml.cs">
       <DependentUpon>PatientView.xaml</DependentUpon>
     </Compile>
