@@ -9,18 +9,24 @@
     public abstract class EntitiesViewModel<T, U> : NotifyPropertyChangedViewModel, IClosable
         where T : EntityViewModel<U> where U : class
     {
+        public event EventHandler CloseEvent;
+
+        public event EventHandler SelectionChangedEvent;
+
         protected readonly ModelContext context;
 
         private T currentChild;
 
-        public event EventHandler CloseEvent;
+        private bool canCreate;
 
         public EntitiesViewModel(ModelContext context)
         {
             this.context = context;
             this.Children = new ObservableCollection<T>();
+            this.canCreate = true;
+            this.SelectionMode = EnumSelectionMode.NoSelection;
 
-            this.CreateCommand = new DelegateCommand(this.Create);
+            this.CreateCommand = new DelegateCommand(this.Create, this.CanCreate);
             this.RefreshCommand = new DelegateCommand(this.Refresh);
             this.CloseCommand = new DelegateCommand(this.Close);
         }
@@ -50,7 +56,34 @@
             }
         }
 
+        public bool IsCreationEnabled
+        {
+            get
+            {
+                return this.canCreate;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.canCreate, value);
+            }
+        }
+
+        public EnumSelectionMode SelectionMode { get; set; }
+
         public abstract string ViewTitle { get; }
+        
+        protected abstract T CreateViewModel(U entity);
+
+        protected virtual IQueryable<U> ApplyFilterOnRefresh(IQueryable<U> query)
+        {
+            return query;
+        }
+        
+        private bool CanCreate()
+        {
+            return this.canCreate;
+        }
 
         private void Create()
         {
@@ -71,7 +104,11 @@
                 });
             this.Children.Clear();
 
-            var entities = this.context.Set<U>().ToList();
+            var query = this.context.Set<U>().AsQueryable();
+
+            this.ApplyFilterOnRefresh(query);
+
+            var entities = query.ToList();
 
             entities.ForEach(ent => this.AddViewModel(ent));
         }
@@ -90,8 +127,6 @@
 
             return viewModel;
         }
-
-        protected abstract T CreateViewModel(U entity);
 
         private void AddHandlerOnChild(T child)
         {
@@ -137,7 +172,52 @@
 
         private void Child_OnIsSelectedChanged(object sender, EventArgs eventArgs)
         {
-            this.CurrentChild = sender as T;
+            var typedSender = (T)sender;
+
+            if (this.SelectionMode == EnumSelectionMode.NoSelection)
+            {
+                this.ManageNoSelectionMode(typedSender);
+            }
+            else if (this.SelectionMode == EnumSelectionMode.Single)
+            {
+                this.ManageSingleSelectionMode(typedSender);
+            }
+
+            this.SelectionChangedEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ManageSingleSelectionMode(T sender)
+        {
+            if (!sender.IsSelected)
+            {
+                return;
+            }
+
+            var selectedChildren = this.Children.Where(c => c.IsSelected).ToList();
+            foreach (var selectedChild in selectedChildren)
+            {
+                if (!ReferenceEquals(selectedChild, sender))
+                {
+                    selectedChild.IsSelected = false;
+                }
+            }
+        }
+
+        private void ManageNoSelectionMode(T sender)
+        {
+            if (sender.IsSelected)
+            {
+                if (this.CurrentChild != null && this.CurrentChild.IsSelected)
+                {
+                    this.CurrentChild.IsSelected = false;
+                }
+
+                this.CurrentChild = sender;
+            }
+            else if (ReferenceEquals(sender, this.CurrentChild))
+            {
+                this.CurrentChild = null;
+            }
         }
     }
 }

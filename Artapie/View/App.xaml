@@ -8,6 +8,7 @@
              xmlns:converter="clr-namespace:View.Converter"
              xmlns:shared="clr-namespace:View.Shared"
              xmlns:viewModelFiche="clr-namespace:ViewModel.Fiche;assembly=ViewModel"
+             xmlns:fiche="clr-namespace:View.Fiche"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -37,6 +38,10 @@
 
                     <DataTemplate DataType="{x:Type viewModelFiche:FichesViewModel}">
                         <shared:EntitiesView />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModelFiche:FicheViewModel}">
+                        <fiche:FicheView />
                     </DataTemplate>
 
                 </ResourceDictionary>

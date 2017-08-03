@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cotation\CotationsViewModel.cs" />
+    <Compile Include="Cotation\CotationViewModel.cs" />
     <Compile Include="Fiche\FichesViewModel.cs" />
     <Compile Include="Fiche\FicheViewModel.cs" />
     <Compile Include="Item\ItemViewModel.cs" />
@@ -58,12 +59,14 @@
     <Compile Include="Item\ItemsViewModel.cs" />
     <Compile Include="Patient\PatientsViewModel.cs" />
     <Compile Include="Patient\PatientViewModel.cs" />
+    <Compile Include="Seance\SeancesViewModel.cs" />
     <Compile Include="Seance\SeanceViewModel.cs" />
     <Compile Include="Shared\BaseEntityViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\DelegateCommand.cs" />
     <Compile Include="Shared\EntitiesViewModel.cs" />
     <Compile Include="Shared\EntityViewModel.cs" />
+    <Compile Include="Shared\EnumSelectionMode.cs" />
     <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\IClosable.cs" />
     <Compile Include="Shared\IDelegateCommand.cs" />

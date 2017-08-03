@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ViewModel.Cotation
+﻿namespace ViewModel.Cotation
 {
     using Dal;
 
@@ -13,14 +7,26 @@ namespace ViewModel.Cotation
     using ViewModel.Fiche;
     using ViewModel.Shared;
 
-    public class CotationsViewModel : BaseEntitiesViewModel<Cotation>
+    public class CotationsViewModel : EntitiesViewModel<CotationViewModel, Cotation>
     {
-        public CotationsViewModel(NavigationViewModel parent, ModelContext context)
-            : base(parent, context)
+        public CotationsViewModel(ModelContext context)
+            : base(context)
         {
         }
 
         public FicheViewModel FicheViewModel { get; set; }
 
+        public override string ViewTitle
+        {
+            get
+            {
+                return "Cotations";
+            }
+        }
+
+        protected override CotationViewModel CreateViewModel(Cotation entity)
+        {
+            return new CotationViewModel(entity, this.context);
+        }
     }
 }
